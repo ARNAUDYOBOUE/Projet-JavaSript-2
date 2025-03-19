@@ -1,142 +1,205 @@
+
 /**
  * FONCTIONS DE MANIPULATION DE CHAÎNES
  */
-
-/**
- * Inverse une chaîne de caractères
- * @param {string} chaine - La chaîne à inverser
- * @returns {string} La chaîne inversée
- */
 function inverserChaine(chaine) {
     return chaine.split('').reverse().join('');
-  }
-  
-  /**
-   * Compte le nombre de caractères dans une chaîne
-   * @param {string} chaine - La chaîne à compter
-   * @returns {number} Le nombre de caractères
-   */
-  function compterCaracteres(chaine) {
+}
+
+function compterCaracteres(chaine) {
     return chaine.length;
-  }
-  
-  /**
-   * Met en majuscule la première lettre de chaque mot d'une phrase
-   * @param {string} phrase - La phrase à modifier
-   * @returns {string} La phrase avec les mots capitalisés
-   */
-  function mettreEnMajuscule(phrase) {
+}
+
+function mettreEnMajuscule(phrase) {
     return phrase
-      .split(' ')
-      .map(mot => mot.charAt(0).toUpperCase() + mot.slice(1))
-      .join(' ');
-  }
-  
-  /**
-   * FONCTIONS DE TABLEAU
-   */
-  
-  /**
-   * Trouve la valeur maximale dans un tableau de nombres
-   * @param {number[]} tableau - Le tableau de nombres
-   * @returns {number} La valeur maximale
-   */
-  function trouverMaximum(tableau) {
+        .split(' ')
+        .map(mot => mot.charAt(0).toUpperCase() + mot.slice(1))
+        .join(' ');
+}
+
+/**
+ * FONCTIONS DE TABLEAU
+ */
+function trouverMaximum(tableau) {
     return Math.max(...tableau);
-  }
-  
-  /**
-   * Trouve la valeur minimale dans un tableau de nombres
-   * @param {number[]} tableau - Le tableau de nombres
-   * @returns {number} La valeur minimale
-   */
-  function trouverMinimum(tableau) {
+}
+
+function trouverMinimum(tableau) {
     return Math.min(...tableau);
-  }
-  
-  /**
-   * Calcule la somme de tous les éléments d'un tableau
-   * @param {number[]} tableau - Le tableau de nombres
-   * @returns {number} La somme des éléments
-   */
-  function sommeTableau(tableau) {
+}
+
+function sommeTableau(tableau) {
     return tableau.reduce((somme, nombre) => somme + nombre, 0);
-  }
-  
-  /**
-   * Filtre les éléments d'un tableau selon une condition
-   * @param {Array} tableau - Le tableau à filtrer
-   * @param {Function} condition - La fonction de condition
-   * @returns {Array} Le tableau filtré
-   */
-  function filtrerTableau(tableau, condition) {
+}
+
+function filtrerTableau(tableau, condition) {
     return tableau.filter(condition);
-  }
-  
-  /**
-   * FONCTIONS MATHÉMATIQUES
-   */
-  
-  /**
-   * Calcule la factorielle d'un nombre
-   * @param {number} nombre - Le nombre dont on veut la factorielle
-   * @returns {number} La factorielle du nombre
-   */
-  function factorielle(nombre) {
+}
+
+/**
+ * FONCTIONS MATHÉMATIQUES
+ */
+function factorielle(nombre) {
     if (nombre === 0 || nombre === 1) {
-      return 1;
+        return 1;
     }
-    return nombre * factorielle(nombre - 1);
-  }
-  
-  /**
-   * Vérifie si un nombre est premier
-   * @param {number} nombre - Le nombre à vérifier
-   * @returns {boolean} Vrai si le nombre est premier, faux sinon
-   */
-  function estNombrePremier(nombre) {
+    
+    // Pour éviter les problèmes de récursion avec de grands nombres
+    let resultat = 1;
+    for (let i = 2; i <= nombre; i++) {
+        resultat *= i;
+    }
+    return resultat;
+}
+
+function estNombrePremier(nombre) {
     if (nombre <= 1) return false;
     if (nombre <= 3) return true;
     
     if (nombre % 2 === 0 || nombre % 3 === 0) return false;
     
     for (let i = 5; i * i <= nombre; i += 6) {
-      if (nombre % i === 0 || nombre % (i + 2) === 0) return false;
+        if (nombre % i === 0 || nombre % (i + 2) === 0) return false;
     }
     
     return true;
-  }
-  
-  /**
-   * Génère la suite de Fibonacci jusqu'à un nombre donné de termes
-   * @param {number} nombreDeTermes - Le nombre de termes à générer
-   * @returns {number[]} La suite de Fibonacci
-   */
-  function suiteFibonacci(nombreDeTermes) {
+}
+
+function suiteFibonacci(nombreDeTermes) {
     if (nombreDeTermes <= 0) return [];
     if (nombreDeTermes === 1) return [0];
     
     const suite = [0, 1];
     
     for (let i = 2; i < nombreDeTermes; i++) {
-      suite.push(suite[i - 1] + suite[i - 2]);
+        suite.push(suite[i - 1] + suite[i - 2]);
     }
     
     return suite;
-  }
-  
-  // Exemples d'utilisation
-  console.log("Inverser une chaîne:", inverserChaine("JavaScript"));
-  console.log("Compter les caractères:", compterCaracteres("Bonjour"));
-  console.log("Mettre en majuscule:", mettreEnMajuscule("bonjour le monde"));
-  
-  const tableau = [5, 2, 9, 1, 7, 3];
-  console.log("Maximum:", trouverMaximum(tableau));
-  console.log("Minimum:", trouverMinimum(tableau));
-  console.log("Somme:", sommeTableau(tableau));
-  console.log("Filtrer (> 3):", filtrerTableau(tableau, nombre => nombre > 3));
-  
-  console.log("Factorielle de 5:", factorielle(5));
-  console.log("7 est premier:", estNombrePremier(7));
-  console.log("10 est premier:", estNombrePremier(10));
-  console.log("Suite de Fibonacci (10 termes):", suiteFibonacci(10));
+}
+
+/**
+ * Fonction utilitaire pour parser une chaîne en tableau de nombres
+ */
+function parseTableau(input) {
+    return input.split(',').map(item => parseFloat(item.trim())).filter(num => !isNaN(num));
+}
+
+// Fonctions de test
+function testInverserChaine() {
+    const chaine = document.getElementById('inputChaine').value;
+    if (!chaine) {
+        alert("Veuillez entrer une chaîne");
+        return;
+    }
+    const resultat = inverserChaine(chaine);
+    document.getElementById('output-chaines').innerHTML = `<pre>Chaîne originale: "${chaine}"\nChaîne inversée: "${resultat}"</pre>`;
+}
+
+function testCompterCaracteres() {
+    const chaine = document.getElementById('inputChaine').value;
+    if (!chaine) {
+        alert("Veuillez entrer une chaîne");
+        return;
+    }
+    const resultat = compterCaracteres(chaine);
+    document.getElementById('output-chaines').innerHTML = `<pre>Chaîne: "${chaine}"\nNombre de caractères: ${resultat}</pre>`;
+}
+
+function testMettreEnMajuscule() {
+    const phrase = document.getElementById('inputPhrase').value;
+    if (!phrase) {
+        alert("Veuillez entrer une phrase");
+        return;
+    }
+    const resultat = mettreEnMajuscule(phrase);
+    document.getElementById('output-chaines').innerHTML = `<pre>Phrase originale: "${phrase}"\nPhrase capitalisée: "${resultat}"</pre>`;
+}
+
+function testTrouverMaximum() {
+    const input = document.getElementById('inputTableau').value;
+    const tableau = parseTableau(input);
+    if (tableau.length === 0) {
+        alert("Veuillez entrer un tableau valide de nombres");
+        return;
+    }
+    const resultat = trouverMaximum(tableau);
+    document.getElementById('output-tableaux').innerHTML = `<pre>Tableau: [${tableau}]\nValeur maximale: ${resultat}</pre>`;
+}
+
+function testTrouverMinimum() {
+    const input = document.getElementById('inputTableau').value;
+    const tableau = parseTableau(input);
+    if (tableau.length === 0) {
+        alert("Veuillez entrer un tableau valide de nombres");
+        return;
+    }
+    const resultat = trouverMinimum(tableau);
+    document.getElementById('output-tableaux').innerHTML = `<pre>Tableau: [${tableau}]\nValeur minimale: ${resultat}</pre>`;
+}
+
+function testSommeTableau() {
+    const input = document.getElementById('inputTableau').value;
+    const tableau = parseTableau(input);
+    if (tableau.length === 0) {
+        alert("Veuillez entrer un tableau valide de nombres");
+        return;
+    }
+    const resultat = sommeTableau(tableau);
+    document.getElementById('output-tableaux').innerHTML = `<pre>Tableau: [${tableau}]\nSomme: ${resultat}</pre>`;
+}
+
+function testFiltrerTableau() {
+    const input = document.getElementById('inputTableau').value;
+    const tableau = parseTableau(input);
+    if (tableau.length === 0) {
+        alert("Veuillez entrer un tableau valide de nombres");
+        return;
+    }
+    
+    const seuil = parseFloat(document.getElementById('inputSeuil').value);
+    if (isNaN(seuil)) {
+        alert("Veuillez entrer une valeur seuil valide");
+        return;
+    }
+    
+    const resultat = filtrerTableau(tableau, nombre => nombre > seuil);
+    document.getElementById('output-tableaux').innerHTML = `<pre>Tableau: [${tableau}]\nFiltré (> ${seuil}): [${resultat}]</pre>`;
+}
+
+function testFactorielle() {
+    const nombre = parseInt(document.getElementById('inputFactorielle').value);
+    if (isNaN(nombre) || nombre < 0) {
+        alert("Veuillez entrer un nombre entier positif");
+        return;
+    }
+    
+    try {
+        const resultat = factorielle(nombre);
+        document.getElementById('output-math').innerHTML = `<pre>Nombre: ${nombre}\nFactorielle: ${resultat}</pre>`;
+    } catch (error) {
+        document.getElementById('output-math').innerHTML = `<pre>Erreur: Le nombre est trop grand pour calculer sa factorielle</pre>`;
+    }
+}
+
+function testEstNombrePremier() {
+    const nombre = parseInt(document.getElementById('inputPremier').value);
+    if (isNaN(nombre) || nombre < 1) {
+        alert("Veuillez entrer un nombre entier positif");
+        return;
+    }
+    
+    const resultat = estNombrePremier(nombre);
+    document.getElementById('output-math').innerHTML = `<pre>${nombre} est premier: ${resultat}</pre>`;
+}
+
+function testSuiteFibonacci() {
+    const termes = parseInt(document.getElementById('inputFibonacci').value);
+    if (isNaN(termes) || termes < 1) {
+        alert("Veuillez entrer un nombre entier positif");
+        return;
+    }
+    
+    const resultat = suiteFibonacci(termes);
+    document.getElementById('output-math').innerHTML = `<pre>Suite de Fibonacci (${termes} termes):\n[${resultat}]</pre>`;
+}
